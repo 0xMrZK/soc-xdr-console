@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  allowedDevOrigins: [
+    "ec2-34-254-15-162.eu-west-1.compute.amazonaws.com",
+  ],
 };
 
 export default nextConfig;

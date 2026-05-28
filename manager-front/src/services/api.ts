@@ -23,7 +23,7 @@ async function request<T>(path: string): Promise<T> {
 }
 
 export const apiClient = {
-  getAgents: () => request<AgentsResponse>("/api/v1/agents"),
-  getIncidents: () => request<IncidentsResponse>("/api/v1/incidents"),
-  getLifecycle: () => request<LifecycleResponse>("/api/v1/lifecycle"),
+  getAgents: () => request<AgentsResponse>("/agents"),
+  getIncidents: () => request<IncidentsResponse>("/incidents"),
+  getLifecycle: () => request<LifecycleResponse>("/lifecycle"),
 };

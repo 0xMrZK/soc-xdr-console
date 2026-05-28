@@ -27,3 +27,5 @@ spec:
               value: "0.1.0"
             - name: LTS_CHANNEL
               value: "lts"
+            - name: MANAGER_API_URL
+              value: "http://manager-api-service:5000/api/v1/events"              
