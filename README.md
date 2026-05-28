@@ -1,5 +1,7 @@
 # Mini Cyber Defense Platform
 
+**[Live Demo](https://centralmanager.wiga.fr/)**
+
 Cloud-native SOC/XDR proof of concept built with Docker, k3s and AWS.
 
 This project demonstrates a lightweight cybersecurity monitoring platform using containerized detection agents deployed on Kubernetes (k3s).
