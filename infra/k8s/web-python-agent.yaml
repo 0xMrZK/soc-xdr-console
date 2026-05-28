@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-python-agent
+  labels:
+    app: web-python-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-python-agent
+  template:
+    metadata:
+      labels:
+        app: web-python-agent
+    spec:
+      containers:
+        - name: web-python-agent
+          image: web-python-agent:0.2.0
+          imagePullPolicy: Never
+          env:
+            - name: AGENT_ID
+              value: "web-python-agent-01"
+            - name: AGENT_TYPE
+              value: "web"
+            - name: AGENT_VERSION
+              value: "0.2.0"
+            - name: LTS_CHANNEL
+              value: "stable"
+            - name: MANAGER_API_URL
+              value: "http://manager-api-service:5000/api/v1/events"

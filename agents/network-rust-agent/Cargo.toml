@@ -1,0 +1,10 @@
+[package]
+name = "network-rust-agent"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+chrono = "0.4"
+rand = "0.8"
+serde_json = "1.0"
+tokio = { version = "1", features = ["full"] }

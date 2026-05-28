@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: network-rust-agent
+  labels:
+    app: network-rust-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: network-rust-agent
+  template:
+    metadata:
+      labels:
+        app: network-rust-agent
+    spec:
+      containers:
+        - name: network-rust-agent
+          image: network-rust-agent:0.1.0
+          imagePullPolicy: Never
+          env:
+            - name: AGENT_ID
+              value: "network-rust-agent-01"
+            - name: AGENT_TYPE
+              value: "network"
+            - name: AGENT_VERSION
+              value: "0.1.0"
+            - name: LTS_CHANNEL
+              value: "experimental"

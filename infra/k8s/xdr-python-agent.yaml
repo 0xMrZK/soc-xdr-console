@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xdr-python-agent
+  labels:
+    app: xdr-python-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: xdr-python-agent
+  template:
+    metadata:
+      labels:
+        app: xdr-python-agent
+    spec:
+      containers:
+        - name: xdr-python-agent
+          image: xdr-python-agent:0.1.0
+          imagePullPolicy: Never
+          env:
+            - name: AGENT_ID
+              value: "xdr-python-agent-01"
+            - name: AGENT_TYPE
+              value: "xdr"
+            - name: AGENT_VERSION
+              value: "0.1.0"
+            - name: LTS_CHANNEL
+              value: "lts"
