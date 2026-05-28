@@ -14,6 +14,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 import type { AgentCardModel } from "@/types/dashboard";
 
 const iconMap = {
@@ -22,11 +23,18 @@ const iconMap = {
     shield: Shield,
 } as const;
 
+function getRiskBorderClass(score: number): string {
+    if (score <= 30) return "border-emerald-500/50 shadow-[0_0_0_1px_rgba(16,185,129,0.15)]";
+    if (score <= 60) return "border-yellow-500/50 shadow-[0_0_0_1px_rgba(234,179,8,0.15)]";
+    if (score <= 80) return "border-orange-500/50 shadow-[0_0_0_1px_rgba(249,115,22,0.15)]";
+    return "border-rose-500/50 shadow-[0_0_0_1px_rgba(244,63,94,0.15)]";
+}
+
 export function AgentCard({ agent }: { agent: AgentCardModel }) {
     const Icon = iconMap[agent.icon];
 
     return (
-        <Card className="h-full transition-transform duration-300 hover:-translate-y-1">
+        <Card className={cn("h-full transition-transform duration-300 hover:-translate-y-1", getRiskBorderClass(agent.riskScore))}>
             <CardHeader className="gap-4 border-b border-white/5 pb-5">
                 <div className="flex items-start justify-between gap-4">
                     <div className="flex items-center gap-3">

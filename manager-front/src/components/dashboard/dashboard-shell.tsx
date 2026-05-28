@@ -205,9 +205,11 @@ export function DashboardShell() {
     );
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [currentTime, setCurrentTime] = useState(() => new Date());
+    const [currentTime, setCurrentTime] = useState<Date | null>(null);
+    const [lastRefresh, setLastRefresh] = useState<Date | null>(null);
 
     useEffect(() => {
+        setCurrentTime(new Date());
         const timer = window.setInterval(() => {
             setCurrentTime(new Date());
         }, 1000);
@@ -236,6 +238,7 @@ export function DashboardShell() {
                         false,
                     ),
                 );
+                setLastRefresh(new Date());
                 setError(null);
             } catch (loadError) {
                 if (!active) return;
@@ -266,12 +269,30 @@ export function DashboardShell() {
 
     const timestamp = useMemo(
         () =>
-            new Intl.DateTimeFormat("en", {
-                dateStyle: "medium",
-                timeStyle: "medium",
-            }).format(currentTime),
+            currentTime
+                ? new Intl.DateTimeFormat("en", {
+                    dateStyle: "medium",
+                    timeStyle: "medium",
+                }).format(currentTime)
+                : "",
         [currentTime],
     );
+
+    const lastRefreshStr = useMemo(() => {
+        if (!lastRefresh) return null;
+        return (
+            new Intl.DateTimeFormat("en", {
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: false,
+                timeZone: "UTC",
+            }).format(lastRefresh) + " UTC"
+        );
+    }, [lastRefresh]);
+
+    const connectedAgents = dashboard.agents.filter((a) => a.status === "healthy").length;
+    const totalAgents = dashboard.agents.length;
 
     return (
         <div className="relative min-h-screen overflow-hidden bg-[radial-gradient(circle_at_top,rgba(8,145,178,0.18),transparent_26%),radial-gradient(circle_at_bottom_right,rgba(244,63,94,0.12),transparent_26%),#020617] text-slate-100">
@@ -280,6 +301,8 @@ export function DashboardShell() {
                 <PlatformHeader
                     clusterStatus={dashboard.clusterStatus}
                     currentTimestamp={timestamp}
+                    totalAgents={totalAgents}
+                    connectedAgents={connectedAgents}
                 />
 
                 {error ? (
@@ -304,8 +327,15 @@ export function DashboardShell() {
                                 Telemetry pipeline health across the Kubernetes security fabric
                             </p>
                         </div>
-                        <div className="text-xs uppercase tracking-[0.18em] text-slate-500">
-                            Polling every 5 seconds
+                        <div className="text-right">
+                            <div className="text-xs uppercase tracking-[0.18em] text-slate-500">
+                                Polling every 5 seconds
+                            </div>
+                            {lastRefreshStr ? (
+                                <div className="mt-1 text-xs text-slate-600">
+                                    Last update: {lastRefreshStr}
+                                </div>
+                            ) : null}
                         </div>
                     </div>
                     <div className="grid gap-4 xl:grid-cols-3">
@@ -330,6 +360,10 @@ export function DashboardShell() {
                         Loading telemetry and lifecycle data...
                     </div>
                 ) : null}
+
+                <footer className="border-t border-white/5 pt-5 text-center text-[11px] uppercase tracking-[0.22em] text-slate-600">
+                    AWS EC2 &bull; k3s &bull; Traefik &bull; Flask/Gunicorn &bull; Next.js 16 &bull; Rust &bull; Python
+                </footer>
             </div>
         </div>
     );

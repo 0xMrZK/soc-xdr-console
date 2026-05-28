@@ -1,10 +1,12 @@
-import { ActivitySquare, Clock3, Shield } from "lucide-react";
+import { ActivitySquare, Clock3, Shield, Users } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 
 interface PlatformHeaderProps {
     clusterStatus: "online" | "degraded" | "offline";
     currentTimestamp: string;
+    totalAgents: number;
+    connectedAgents: number;
 }
 
 const clusterVariant = {
@@ -16,6 +18,8 @@ const clusterVariant = {
 export function PlatformHeader({
     clusterStatus,
     currentTimestamp,
+    totalAgents,
+    connectedAgents,
 }: PlatformHeaderProps) {
     return (
         <header className="relative overflow-hidden rounded-[28px] border border-cyan-500/20 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.2),transparent_32%),linear-gradient(135deg,rgba(15,23,42,0.96),rgba(2,6,23,0.92))] p-6 shadow-[0_0_80px_rgba(14,165,233,0.12)] sm:p-8">
@@ -45,6 +49,10 @@ export function PlatformHeader({
                         <Badge variant={clusterVariant[clusterStatus]}>
                             {clusterStatus}
                         </Badge>
+                        <div className="mt-2 flex items-center gap-1.5 text-xs text-slate-400">
+                            <Users className="size-3.5" />
+                            {connectedAgents}/{totalAgents} agents connected
+                        </div>
                     </div>
                     <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur-md">
                         <div className="mb-2 flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-slate-400">
