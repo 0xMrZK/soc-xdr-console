@@ -32,7 +32,7 @@ export function PlatformHeader({
                     </div>
                     <div className="space-y-2">
                         <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl xl:text-5xl">
-                            Mini Cyber Defense Platform
+                            XDR Security Hub
                         </h1>
                         <p className="max-w-3xl text-sm leading-7 text-slate-300 sm:text-base">
                             Cloud-native SOC/XDR proof of concept running on k3s

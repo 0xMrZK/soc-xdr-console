@@ -15,7 +15,7 @@ const jetBrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Mini Cyber Defense Platform",
+  title: "XDR Security Hub",
   description: "Cloud-native SOC/XDR dashboard for detection agents running on k3s.",
 };
 
