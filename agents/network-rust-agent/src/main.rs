@@ -1,5 +1,6 @@
 use chrono::Utc;
 use rand::Rng;
+use reqwest::Client;
 use serde_json::json;
 use tokio::time::{sleep, Duration};
 
@@ -9,6 +10,9 @@ async fn main() {
     let agent_type = std::env::var("AGENT_TYPE").unwrap_or("network".to_string());
     let version = std::env::var("AGENT_VERSION").unwrap_or("0.1.0".to_string());
     let lts_channel = std::env::var("LTS_CHANNEL").unwrap_or("experimental".to_string());
+    let manager_api_url = std::env::var("MANAGER_API_URL")
+        .unwrap_or("http://manager-api-service:5000/api/v1/events".to_string());
+    let http_client = Client::new();
 
     println!("Starting {} ({}) v{}", agent_id, agent_type, version);
 
@@ -35,6 +39,24 @@ async fn main() {
             "risk_score": risk_score,
             "message": "Mock suspicious network activity detected"
         });
+
+        match http_client
+            .post(&manager_api_url)
+            .json(&event)
+            .send()
+            .await
+        {
+            Ok(response) => {
+                println!(
+                    "sent event severity={} status={}",
+                    severity,
+                    response.status()
+                );
+            }
+            Err(error) => {
+                eprintln!("failed to send event: {}", error);
+            }
+        }
 
         println!("{}", event);
 

@@ -4,10 +4,16 @@ import random
 import time
 from datetime import datetime, timezone
 
+import requests
+
 AGENT_ID = os.getenv("AGENT_ID", "xdr-python-agent-01")
 AGENT_TYPE = os.getenv("AGENT_TYPE", "xdr")
 AGENT_VERSION = os.getenv("AGENT_VERSION", "0.1.0")
 LTS_CHANNEL = os.getenv("LTS_CHANNEL", "lts")
+MANAGER_API_URL = os.getenv(
+    "MANAGER_API_URL",
+    "http://manager-api-service:5000/api/v1/events"
+)
 
 SCENARIOS = [
     {
@@ -71,6 +77,20 @@ while True:
         ],
         "recommended_action": "Open investigation and correlate with recent authentication and network telemetry"
     }
+
+    try:
+        response = requests.post(
+            MANAGER_API_URL,
+            json=event,
+            timeout=5,
+        )
+
+        print(
+            f"sent event severity={severity} status={response.status_code}",
+            flush=True,
+        )
+    except Exception as e:
+        print(f"failed to send event: {e}", flush=True)
 
     print(json.dumps(event), flush=True)
     time.sleep(5)
